@@ -11,10 +11,18 @@ private:
     Player player;
     Player ai;
     vector<Card> communityCards;
+    int pot;
+    int currentBet;
     void dealInitialCards();
-    void dealCommunityCards();
+    void dealCommunityCards(int numCards);
     void clearHands();
+    void bettingRound();
+    void playerAction();
+    void aiAction();
 public:
     Game();
     void playRound();
+    bool playerHasChips() const;
+    bool aiHasChips() const;
+    void displayChips() const;
 };

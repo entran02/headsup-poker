@@ -12,9 +12,12 @@ g++ -g src/main.cpp src/card.cpp src/deck.cpp src/player.cpp src/game.cpp -o bin
 - [x] deal player and AI cards
 - [x] deal community cards
 - [x] output to console
-- [ ] add betting phases
-- [ ] reveal community cards in order (turn, flop, river)
+- [x] add betting phases
+- [x] reveal community cards in order (turn, flop, river)
+- [ ] add dealer chip and blinds
 - [ ] identify type of hand (pair, set, straight, flush, etc.)
-- [ ] add graphics visualization
+- [ ] logic to identify winner
+- [ ] format output to be more readable
 - [ ] improve AI (maybe include difficulty levels - strategy pattern?)
+- [ ] add graphics visualization
 

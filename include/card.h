@@ -31,10 +31,10 @@ public:
             case EIGHT: return "8";
             case NINE: return "9";
             case TEN: return "10";
-            case JACK: return "Jack";
-            case QUEEN: return "Queen";
-            case KING: return "King";
-            case ACE: return "Ace";
+            case JACK: return "J";
+            case QUEEN: return "Q";
+            case KING: return "K";
+            case ACE: return "A";
             default: return "Unknown";
         }
     }
