@@ -6,8 +6,8 @@ using namespace std;
 int main() {
     Game game;
     while (game.playerHasChips() && game.aiHasChips()) {
-        game.playRound();
         game.displayChips();
+        game.playRound();
     }
     cout << "Game over!" << endl;
     if (game.playerHasChips()) {

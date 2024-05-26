@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Game::Game() : player(1000), ai(1000), pot(0), currentBet(0) {} // Both players start with 1000 chips
+Game::Game() : player(1000), ai(1000), pot(0), currentBet(0), playerIsDealer(true) {} // Both players start with 1000 chips
 
 void Game::dealInitialCards() {
     player.receiveCard(deck.draw());
@@ -18,6 +18,14 @@ void Game::dealCommunityCards(int numCards) {
     }
 }
 
+void Game::displayPlayerHand(){
+    cout << "Player's Hand: ";
+    for (const auto& card : player.hand) {
+        cout << card.toString() << " ";
+    }
+    cout << endl;
+}
+
 void Game::clearHands() {
     player.clearHand();
     ai.clearHand();
@@ -26,20 +34,43 @@ void Game::clearHands() {
     currentBet = 0;
 }
 
-void Game::bettingRound() {
+void Game::preFlopBettingRound() {
     currentBet = 0;
-    playerAction();
-    if (!player.folded) {
+    if (playerIsDealer) {
+        playerAction();
+        if (!player.folded) aiAction();
+    } else {
         aiAction();
+        if (!ai.folded) playerAction();
     }
     if (player.folded) {
-        cout << "Player folds. AI wins " << pot << " chips." << endl;
+        cout << "Player folds. AI wins the pot of " << pot << " chips.\n";
         ai.chips += pot;
     } else if (ai.folded) {
-        cout << "AI folds. Player wins " << pot << " chips." << endl;
+        cout << "AI folds. Player wins the pot of " << pot << " chips.\n";
         player.chips += pot;
     } else {
-        cout << "Both players call. Pot is " << pot << endl;
+        cout << "Both players call. Pot is now " << pot << " chips.\n";
+    }
+}
+
+void Game::postFlopBettingRound() {
+    currentBet = 0;
+    if (playerIsDealer) {
+        aiAction();
+        if (!ai.folded) playerAction();
+    } else {
+        playerAction();
+        if (!player.folded) aiAction();
+    }
+    if (player.folded) {
+        cout << "Player folds. AI wins the pot of " << pot << " chips.\n";
+        ai.chips += pot;
+    } else if (ai.folded) {
+        cout << "AI folds. Player wins the pot of " << pot << " chips.\n";
+        player.chips += pot;
+    } else {
+        cout << "Both players call. Pot is now " << pot << " chips.\n";
     }
 }
 
@@ -79,71 +110,81 @@ void Game::aiAction() {
         cout << "AI calls with " << callAmount << " chips.\n";
     } else {
         ai.fold();
-        cout << "AI folds.\n";
     }
+}
+
+void Game::switchDealer() {
+    playerIsDealer = !playerIsDealer;
+}
+
+void Game::postBlinds() {
+    int blindAmount = 20;
+    player.bet(blindAmount);
+    ai.bet(blindAmount);
+    pot += 2 * blindAmount;
+    cout << (playerIsDealer ? "player" : "AI") << " is dealer" << "\n";
+    cout << "20 chip blind is posted by both players. Pot is " << pot << " chips.\n";
 }
 
 void Game::playRound() {
     clearHands();
+    postBlinds();
     dealInitialCards();
 
     // pre-flop
     cout << "Pre-flop betting round.\n";
-    cout << "Player's Hand: ";
-    for (const auto& card : player.hand) {
-        cout << card.toString() << " ";
+    displayPlayerHand();
+    preFlopBettingRound();
+    if (player.folded || ai.folded) {
+        switchDealer();
+        return;
     }
-    bettingRound();
-    if (player.folded || ai.folded) return;
 
     // flop
-    cout << "Player's Hand: ";
-    for (const auto& card : player.hand) {
-        cout << card.toString() << " ";
-    }
+    displayPlayerHand();
     cout << "Flop: ";
     dealCommunityCards(3);
     for (const auto& card : communityCards) {
         cout << card.toString() << " ";
     }
     cout << "\nFlop betting round.\n";
-    bettingRound();
-    if (player.folded || ai.folded) return;
+    postFlopBettingRound();
+    if (player.folded || ai.folded) {
+        switchDealer();
+        return;
+    }
     
     // turn
-    cout << "Player's Hand: ";
-    for (const auto& card : player.hand) {
-        cout << card.toString() << " ";
-    }
+    displayPlayerHand();
     cout << "Turn: ";
     dealCommunityCards(1);
     for (const auto& card : communityCards) {
         cout << card.toString() << " ";
     }
     cout << "\nTurn betting round.\n";
-    bettingRound();
-    if (player.folded || ai.folded) return;
+    postFlopBettingRound();
+    if (player.folded || ai.folded) {
+        switchDealer();
+        return;
+    }
     
     // river
-    cout << "Player's Hand: ";
-    for (const auto& card : player.hand) {
-        cout << card.toString() << " ";
-    }
+    displayPlayerHand();
     cout << "River: ";
     dealCommunityCards(1);
     for (const auto& card : communityCards) {
         cout << card.toString() << " ";
     }
     cout << "\nRiver betting round.\n";
-    bettingRound();
-    if (player.folded || ai.folded) return;
+    postFlopBettingRound();
+    if (player.folded || ai.folded) {
+        switchDealer();
+        return;
+    }
 
     // showdown
     cout << "Showdown: Both players reveal their hands.\n";
-    cout << "Player's Hand: ";
-    for (const auto& card : player.hand) {
-        cout << card.toString() << " ";
-    }
+    displayPlayerHand();
     cout << "\nAI's Hand: ";
     for (const auto& card : ai.hand) {
         cout << card.toString() << " ";
@@ -159,6 +200,8 @@ void Game::playRound() {
     cout << "Pot is split between player and AI.\n";
     player.chips += pot / 2;
     ai.chips += pot / 2;
+
+    switchDealer();
 }
 
 bool Game::playerHasChips() const {

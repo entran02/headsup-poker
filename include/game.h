@@ -13,12 +13,17 @@ private:
     vector<Card> communityCards;
     int pot;
     int currentBet;
+    bool playerIsDealer;
     void dealInitialCards();
     void dealCommunityCards(int numCards);
+    void displayPlayerHand();
     void clearHands();
-    void bettingRound();
+    void preFlopBettingRound();
+    void postFlopBettingRound();
     void playerAction();
     void aiAction();
+    void switchDealer();
+    void postBlinds();
 public:
     Game();
     void playRound();

@@ -18,6 +18,7 @@ g++ -g src/main.cpp src/card.cpp src/deck.cpp src/player.cpp src/game.cpp -o bin
 - [ ] identify type of hand (pair, set, straight, flush, etc.)
 - [ ] logic to identify winner
 - [ ] format output to be more readable
+- [ ] add min raise value
 - [ ] improve AI (maybe include difficulty levels - strategy pattern?)
 - [ ] add graphics visualization
 
