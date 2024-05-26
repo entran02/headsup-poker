@@ -7,7 +7,7 @@ g++ -g src/main.cpp src/card.cpp src/deck.cpp src/player.cpp src/game.cpp -o bin
 ./bin/main
 ```
 
-### todo list
+### todo list:
 - [x] create base classes 
 - [x] deal player and AI cards
 - [x] deal community cards
