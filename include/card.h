@@ -42,4 +42,12 @@ public:
     std::string toString() const {
         return getRankString() + " of " + getSuitString();
     }
+
+    bool operator<(const Card& other) const {
+        return rank < other.rank;
+    }
+
+    bool operator==(const Card& other) const {
+        return rank == other.rank;
+    }
 };

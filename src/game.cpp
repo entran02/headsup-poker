@@ -1,4 +1,5 @@
 #include "../include/game.h"
+#include "../include/hand_evaluator.h"
 #include <iostream>
 
 using namespace std;
@@ -126,6 +127,18 @@ void Game::postBlinds() {
     cout << "20 chip blind is posted by both players. Pot is " << pot << " chips.\n";
 }
 
+HandEvaluation Game::evaluatePlayerHand() const {
+    vector<Card> combinedHand = player.hand;
+    combinedHand.insert(combinedHand.end(), communityCards.begin(), communityCards.end());
+    return evaluateHand(combinedHand);
+}
+
+HandEvaluation Game::evaluateAIHand() const {
+    vector<Card> combinedHand = ai.hand;
+    combinedHand.insert(combinedHand.end(), communityCards.begin(), communityCards.end());
+    return evaluateHand(combinedHand);
+}
+
 void Game::playRound() {
     clearHands();
     postBlinds();
@@ -185,7 +198,7 @@ void Game::playRound() {
     // showdown
     cout << "Showdown: Both players reveal their hands.\n";
     displayPlayerHand();
-    cout << "\nAI's Hand: ";
+    cout << "AI's Hand: ";
     for (const auto& card : ai.hand) {
         cout << card.toString() << " ";
     }
@@ -195,11 +208,22 @@ void Game::playRound() {
     }
     cout << "\nPot is " << pot << " chips.\n";
 
-    // add hand evaluation logic here to determine the winner.
-    // pot is just split for now
-    cout << "Pot is split between player and AI.\n";
-    player.chips += pot / 2;
-    ai.chips += pot / 2;
+    HandEvaluation playerHand = evaluatePlayerHand();
+    HandEvaluation aiHand = evaluateAIHand();
+    cout << "Player's best hand: " << handRankToString(playerHand.rank) << endl;
+    cout << "AI's best hand: " << handRankToString(aiHand.rank) << endl;
+
+    if (playerHand.rank > aiHand.rank) {
+        cout << "Player wins the pot of " << pot << " chips.\n";
+        player.chips += pot;
+    } else if (aiHand.rank > playerHand.rank) {
+        cout << "AI wins the pot of " << pot << " chips.\n";
+        ai.chips += pot;
+    } else {
+        cout << "It's a tie! Chopped pot.\n";
+        player.chips += pot / 2;
+        ai.chips += pot / 2;
+    }
 
     switchDealer();
 }

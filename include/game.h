@@ -2,6 +2,7 @@
 #include <vector>
 #include "deck.h"
 #include "player.h"
+#include "hand_evaluator.h"
 
 using namespace std;
 
@@ -24,6 +25,8 @@ private:
     void aiAction();
     void switchDealer();
     void postBlinds();
+    HandEvaluation evaluatePlayerHand() const;
+    HandEvaluation evaluateAIHand() const;
 public:
     Game();
     void playRound();
