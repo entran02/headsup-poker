@@ -33,4 +33,14 @@ public:
     bool playerHasChips() const;
     bool aiHasChips() const;
     void displayChips() const;
+
+    // methods for testing
+    void setPlayerHand(const vector<Card>& cards);
+    void setAIHand(const vector<Card>& cards);
+    void setCommunityCards(const vector<Card>& cards);
+    vector<Card> getPlayerHand() const;
+    vector<Card> getAIHand() const;
+    vector<Card> getCommunityCards() const;
+    HandEvaluation testEvaluatePlayerHand() const;
+    HandEvaluation testEvaluateAIHand() const;
 };

@@ -172,7 +172,7 @@ bool isTwoPair(const vector<Card>& cards, vector<Rank>& ranks) {
         sort(pairs.begin(), pairs.end(), greater<Rank>());
         ranks = {pairs[0], pairs[1]};
         sort(kickers.begin(), kickers.end(), greater<Rank>());
-        ranks.push_back(kickers[0]);  // Highest kicker
+        ranks.push_back(kickers[0]);
         return true;
     }
 
@@ -192,7 +192,7 @@ bool isPair(const vector<Card>& cards, vector<Rank>& ranks) {
                 if (card.rank != entry.first) {
                     ranks.push_back(card.rank);
                 }
-                if (ranks.size() == 5) break;
+                if (ranks.size() == 4) break;
             }
             return true;
         }

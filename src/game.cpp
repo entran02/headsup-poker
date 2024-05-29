@@ -1,6 +1,7 @@
 #include "../include/game.h"
 #include "../include/hand_evaluator.h"
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -130,12 +131,18 @@ void Game::postBlinds() {
 HandEvaluation Game::evaluatePlayerHand() const {
     vector<Card> combinedHand = player.hand;
     combinedHand.insert(combinedHand.end(), communityCards.begin(), communityCards.end());
+    sort(combinedHand.begin(), combinedHand.end(), [](const Card& a, const Card& b) {
+        return a.rank > b.rank;
+    });
     return evaluateHand(combinedHand);
 }
 
 HandEvaluation Game::evaluateAIHand() const {
     vector<Card> combinedHand = ai.hand;
     combinedHand.insert(combinedHand.end(), communityCards.begin(), communityCards.end());
+    sort(combinedHand.begin(), combinedHand.end(), [](const Card& a, const Card& b) {
+        return a.rank > b.rank;
+    });
     return evaluateHand(combinedHand);
 }
 
@@ -239,4 +246,45 @@ bool Game::aiHasChips() const {
 void Game::displayChips() const {
     cout << "Player has " << player.chips << " chips.\n";
     cout << "AI has " << ai.chips << " chips.\n";
+}
+
+void Game::setPlayerHand(const vector<Card>& cards) {
+    player.clearHand();
+    for (const auto& card : cards) {
+        player.receiveCard(card);
+    }
+}
+
+void Game::setAIHand(const vector<Card>& cards) {
+    ai.clearHand();
+    for (const auto& card : cards) {
+        ai.receiveCard(card);
+    }
+}
+
+void Game::setCommunityCards(const vector<Card>& cards) {
+    communityCards.clear();
+    for (const auto& card : cards) {
+        communityCards.push_back(card);
+    }
+}
+
+vector<Card> Game::getPlayerHand() const {
+    return player.hand;
+}
+
+vector<Card> Game::getAIHand() const {
+    return ai.hand;
+}
+
+vector<Card> Game::getCommunityCards() const {
+    return communityCards;
+}
+
+HandEvaluation Game::testEvaluatePlayerHand() const {
+    return evaluatePlayerHand();
+}
+
+HandEvaluation Game::testEvaluateAIHand() const {
+    return evaluateAIHand();
 }
