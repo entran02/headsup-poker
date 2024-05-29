@@ -25,7 +25,7 @@ g++ -g src/test_hands.cpp src/card.cpp src/deck.cpp src/player.cpp src/game.cpp 
 - [x] logic to identify winner
 - [x] add tests
 - [ ] improve AI (maybe include difficulty levels - strategy pattern?)
-- [ ] fix raise logic (player can only raise as much as they have)
+- [x] fix raise logic (player can only raise as much as they have)
 - [ ] add all-in logic (if all-in, just flip all community cards)
 - [ ] add min raise value
 - [ ] allow multiple runs if all-
