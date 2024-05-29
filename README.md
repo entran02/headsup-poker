@@ -23,10 +23,11 @@ g++ -g src/test_hands.cpp src/card.cpp src/deck.cpp src/player.cpp src/game.cpp 
 - [x] add dealer chip and blinds
 - [x] identify type of hand (pair, set, straight, flush, etc.)
 - [x] logic to identify winner
-- [ ] add tests
+- [x] add tests
 - [ ] format output to be more readable
 - [ ] add min raise value
 - [ ] improve AI (maybe include difficulty levels - strategy pattern?)
 - [ ] add data collection and analysis (call%, fold%, etc.)
 - [ ] add graphics visualization
+- [ ] improve testing to actual framework
 
