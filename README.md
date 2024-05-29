@@ -24,9 +24,12 @@ g++ -g src/test_hands.cpp src/card.cpp src/deck.cpp src/player.cpp src/game.cpp 
 - [x] identify type of hand (pair, set, straight, flush, etc.)
 - [x] logic to identify winner
 - [x] add tests
-- [ ] format output to be more readable
-- [ ] add min raise value
 - [ ] improve AI (maybe include difficulty levels - strategy pattern?)
+- [ ] fix raise logic (player can only raise as much as they have)
+- [ ] add all-in logic (if all-in, just flip all community cards)
+- [ ] add min raise value
+- [ ] allow multiple runs if all-
+- [ ] format output to be more readable
 - [ ] add data collection and analysis (call%, fold%, etc.)
 - [ ] add graphics visualization
 - [ ] improve testing to actual framework

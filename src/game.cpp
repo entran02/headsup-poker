@@ -86,12 +86,19 @@ void Game::playerAction() {
             break;
         case 'r': {
             int raiseAmount;
-            cout << "Enter raise amount: ";
-            cin >> raiseAmount;
-            player.bet(raiseAmount);
-            pot += raiseAmount;
-            currentBet = raiseAmount;
-            cout << "Player raises " << raiseAmount << "." << endl;
+            while (true) {
+                cout << "Current chips: " << player.chips << endl << "Enter raise amount: ";
+                cin >> raiseAmount;
+                if (raiseAmount > player.chips) {
+                    cout << "You cannot raise more than your current chips. Please enter a valid amount." << endl;
+                } else {
+                    player.bet(raiseAmount);
+                    pot += raiseAmount;
+                    currentBet = raiseAmount;
+                    cout << "Player raises " << raiseAmount << "." << endl;
+                    break;
+                }
+            }
             break;
         }
         case 'f':
